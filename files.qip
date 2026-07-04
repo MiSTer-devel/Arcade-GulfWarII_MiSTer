@@ -1,0 +1,24 @@
+set_global_assignment -name SDC_FILE Arcade-GulfWarII.sdc
+set_global_assignment -name SYSTEMVERILOG_FILE Arcade-GulfWarII.sv
+
+set_global_assignment -name QIP_FILE rtl/game.qip
+set_global_assignment -name QIP_FILE rtl/modules/TMS320C1X/TMS320C1X.qip
+set_global_assignment -name QIP_FILE rtl/gulfwar2/gulfwar2.qip
+
+# Core-owned Toaplan porting shell.
+set_global_assignment -name VERILOG_FILE rtl/gulfwar2/video_timing.v
+set_global_assignment -name VERILOG_FILE rtl/gulfwar2/pause.v
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/gulfwar2/chip_select.v
+
+set_global_assignment -name VERILOG_FILE rtl/gulfwar2/mem/rom_controller.v
+set_global_assignment -name VERILOG_FILE rtl/gulfwar2/mem/tile_cache.v
+set_global_assignment -name VERILOG_FILE rtl/gulfwar2/mem/cache.v
+set_global_assignment -name VHDL_FILE rtl/gulfwar2/mem/math.vhd
+set_global_assignment -name VHDL_FILE rtl/gulfwar2/mem/segment.vhd
+set_global_assignment -name VHDL_FILE rtl/gulfwar2/mem/download_buffer.vhd
+set_global_assignment -name VHDL_FILE rtl/gulfwar2/mem/sdram.vhd
+set_global_assignment -name VHDL_FILE rtl/gulfwar2/mem/dual_port_ram.vhd
+
+# Resolve bare ROM/table init names from drop-in module folders.
+set_global_assignment -name SEARCH_PATH rtl/modules/fx68k/hdl
+set_global_assignment -name SEARCH_PATH rtl/modules/TMS320C1X

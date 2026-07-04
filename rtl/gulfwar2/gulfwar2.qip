@@ -1,0 +1,7 @@
+set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) gulfwar2_addr_decode.sv]
+set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) gulfwar2_sound_decode.sv]
+set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) gulfwar2_latches.sv]
+set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) gulfwar2_dsp_host.sv]
+set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) gulfwar2_tile_ram.sv]
+set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) gulfwar2_sprite_ram.sv]
+set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) gulfwar2_palette_ram.sv]

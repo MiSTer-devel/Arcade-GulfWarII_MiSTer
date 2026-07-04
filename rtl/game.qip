@@ -1,0 +1,9 @@
+# CPU modules
+set_global_assignment -name QIP_FILE rtl/modules/T80/T80.qip
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/modules/fx68k/hdl/fx68k.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/modules/fx68k/hdl/fx68kAlu.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/modules/fx68k/hdl/uaddrPla.sv
+
+# Sound modules
+set_global_assignment -name QIP_FILE rtl/modules/opl2_fpga_MiSTer/opl2_fpga.qip
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/gulfwar2/gw2_audio_mixer.sv
