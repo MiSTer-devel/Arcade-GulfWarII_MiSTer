@@ -1,4 +1,5 @@
 db
+sim
 sim/*.hex
 sim/*.vcd
 sim/*.vvp
