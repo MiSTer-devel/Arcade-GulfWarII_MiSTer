@@ -2,7 +2,7 @@ set_global_assignment -name SDC_FILE Arcade-GulfWarII.sdc
 set_global_assignment -name SYSTEMVERILOG_FILE Arcade-GulfWarII.sv
 
 set_global_assignment -name QIP_FILE rtl/game.qip
-set_global_assignment -name QIP_FILE rtl/modules/TMS320C1X/TMS320C1X.qip
+set_global_assignment -name QIP_FILE rtl/modules/IKA32010/IKA32010.qip
 set_global_assignment -name QIP_FILE rtl/gulfwar2/gulfwar2.qip
 
 # Core-owned Toaplan porting shell.
@@ -21,4 +21,4 @@ set_global_assignment -name VHDL_FILE rtl/gulfwar2/mem/dual_port_ram.vhd
 
 # Resolve bare ROM/table init names from drop-in module folders.
 set_global_assignment -name SEARCH_PATH rtl/modules/fx68k/hdl
-set_global_assignment -name SEARCH_PATH rtl/modules/TMS320C1X
+set_global_assignment -name SEARCH_PATH rtl/modules/IKA32010
