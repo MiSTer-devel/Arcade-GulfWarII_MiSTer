@@ -455,7 +455,10 @@ reg  [8:0] gw_raster_vc;
 
 wire [8:0] gw_raster_h_last = refresh_mod ? GW_NTSC_H_LAST : GW_MAME_H_LAST;
 wire [8:0] gw_raster_v_last = refresh_mod ? GW_NTSC_V_LAST : GW_MAME_V_LAST;
-wire [8:0] gw_top_prerender_v = gw_raster_v_last - 9'd2;
+// Render raw line 0 as soon as vblank starts. Starting only at the last
+// couple vblank lines leaves too little runway and can expose stale line-buffer
+// contents at the top of the unrotated picture.
+wire [8:0] gw_top_prerender_v = GW_MAME_VISIBLE_V;
 
 wire signed [10:0] gw_hs_pos_adj   = {{7{hs_offset[3]}}, hs_offset};
 wire signed [10:0] gw_vs_pos_adj   = {{7{vs_offset[3]}}, vs_offset};
@@ -2188,7 +2191,7 @@ always @ (posedge clk_sys) begin
                 if ( y == 239 ) begin
                     draw_state <= 0;
                 end else if ( y == 0 && video_vc != 9'd0 ) begin
-                    // Line 0 is pre-rendered during late vblank so it is ready
+                    // Line 0 is pre-rendered from vblank start so it is ready
                     // before the visible frame starts. Hold it until scanline 0,
                     // then resume the usual one-line-ahead cadence.
                     draw_state <= 3;

@@ -60,33 +60,6 @@ wire [15:0] host_port1_din =
     (dsp_host_seg == 3'h3) ? shared_mem[shared_dsp_ram_addr[12:0]] :
     16'h0000;
 
-`ifdef USE_LEGACY_TMS320C1X
-`define DSP_PC dut.PC
-`define DSP_OP dut.IC
-`define DSP_DP dut.ST.DP
-`define DSP_DP_SET 1'b0
-`define DSP_WRBUS 16'h0000
-
-TMS320C1X dut
-(
-    .CLK     (clk_sys),
-    .RST_N   (~reset),
-    .EN      (dsp_rom_loaded && dsp_active),
-    .CE_F    (clk_14M),
-    .CE_R    (clk_14M_N),
-    .RS_N    (~tms_reset),
-    .INT_N   (tms_int_n),
-    .BIO_N   (tms_bio),
-    .A       (tms_addr),
-    .DI      (tms_din),
-    .DO      (tms_dout),
-    .PC      (tms_rom_addr),
-    .ROM_Q   (tms_rom_dout),
-    .WE_N    (tms_we_n),
-    .DEN_N   (tms_den_n),
-    .MEN_N   (tms_men_n)
-);
-`else
 `define DSP_PC dut.u_ika32010.if_pc
 `define DSP_OP dut.u_ika32010.if_opcodereg
 `define DSP_DP dut.u_ika32010.reg_dp
@@ -116,7 +89,6 @@ dut
     .DEN_N   (tms_den_n),
     .MEN_N   (tms_men_n)
 );
-`endif
 
 always #5 clk_sys = ~clk_sys;
 
