@@ -793,7 +793,11 @@ always @ (posedge clk_sys) begin
     end
 end
 
-TMS320C1X dsp
+gulfwar2_ika32010_dsp
+#(
+    .ROM_ADDR_SWAP_A0_A1(1'b0)
+)
+dsp
 (
     .CLK(clk_sys),
     .RST_N(~reset),
@@ -810,12 +814,12 @@ TMS320C1X dsp
     .DI(tms_din),
     .DO(tms_dout),
 
-    .PC(tms_rom_addr),      // output reg [11:0] PC,
-    .ROM_Q(tms_rom_dout),   // input      [15:0] ROM_Q,
+    .PC(tms_rom_addr),
+    .ROM_Q(tms_rom_dout),
 
-    .WE_N(tms_we_n),        // (WE) Write enable for device output data on D15-D0 (OUT instruction)
-    .DEN_N(tms_den_n),      // (DEN) Data enable for device input data on D15-D0 (IN instruction)
-    .MEN_N(tms_men_n)       // (MEN) Memory enable indicates that D15-D0 will accept external memory instruction. (External instruction)
+    .WE_N(tms_we_n),        // (WE) output data valid for OUT instruction
+    .DEN_N(tms_den_n),      // (DEN) data enable for IN instruction
+    .MEN_N(tms_men_n)       // (MEN) program/data memory read
 );
 
 wire [11:0] tms_addr ;
@@ -859,8 +863,8 @@ wire [15:0] gw_dsp_port1_din_mux =
 wire        gw_tms_we_raw       = (tms_we_n == 1'b0);
 wire        gw_tms_den_raw      = (tms_den_n == 1'b0);
 wire [2:0]  gw_tms_port         = tms_addr[2:0];
-wire        gw_tms_port_wr      = clk_14M && gw_tms_we_raw;
-wire        gw_tms_port_rd      = clk_14M && gw_tms_den_raw;
+wire        gw_tms_port_wr      = gw_tms_we_raw;
+wire        gw_tms_port_rd      = gw_tms_den_raw;
 wire        gw_tms_port0_wr     = gw_tms_port_wr && (gw_tms_port == 3'h0);
 wire        gw_tms_port1_wr     = gw_tms_port_wr && (gw_tms_port == 3'h1);
 wire        gw_tms_port1_rd     = gw_tms_port_rd && (gw_tms_port == 3'h1);
@@ -1491,51 +1495,49 @@ always @ (posedge clk_sys) begin
         shared_dsp_sprite_w <= 1'b0;
         shared_dsp_palette_w <= 1'b0;
 
-        if (clk_14M == 1'b1) begin
-            if (tms_den_n == 1'b0) begin
-                case (tms_addr[2:0])
-                    3'h1: begin
-                        tms_din <= gw_dsp_port1_din_mux;
-                    end
-                    default: tms_din <= 16'd0;
-                endcase
-            end
+        if (gw_tms_port_rd) begin
+            case (tms_addr[2:0])
+                3'h1: begin
+                    tms_din <= gw_dsp_port1_din_mux;
+                end
+                default: tms_din <= 16'd0;
+            endcase
+        end
 
-            if (tms_we_n == 1'b0) begin
-                case (tms_addr[2:0])
-                    3'h0: begin
-                        dsp_host_seg <= tms_dout[15:13];
-                        shared_dsp_ram_addr <= {1'b0, tms_dout[12:0]};
-                    end
+        if (gw_tms_port_wr) begin
+            case (tms_addr[2:0])
+                3'h0: begin
+                    dsp_host_seg <= tms_dout[15:13];
+                    shared_dsp_ram_addr <= {1'b0, tms_dout[12:0]};
+                end
 
-                    3'h1: begin
-                        shared_dsp_ram_din <= tms_dout;
-                        dsp_execute <= gw_dsp_execute_set;
-                        case (dsp_host_seg)
-                            3'h3: begin
-                                shared_dsp_ram_w <= 1'b1;
-                            end
-                            3'h4: shared_dsp_sprite_w <= 1'b1;
-                            3'h5: shared_dsp_palette_w <= 1'b1;
-                            default: begin
-                            end
-                        endcase
-                    end
+                3'h1: begin
+                    shared_dsp_ram_din <= tms_dout;
+                    dsp_execute <= gw_dsp_execute_set;
+                    case (dsp_host_seg)
+                        3'h3: begin
+                            shared_dsp_ram_w <= 1'b1;
+                        end
+                        3'h4: shared_dsp_sprite_w <= 1'b1;
+                        3'h5: shared_dsp_palette_w <= 1'b1;
+                        default: begin
+                        end
+                    endcase
+                end
 
-                    3'h3: begin
-                        if (tms_dout[15]) begin
-                            tms_bio <= 1'b1;
-                        end else if (tms_dout == 16'd0) begin
-                            tms_bio <= 1'b0;
-                            if (dsp_execute) begin
-                                cpu_halt_by_dsp <= 1'b0;
-                                dsp_execute <= 1'b0;
-                                dsp_halt_released <= 1'b1;
-                            end
+                3'h3: begin
+                    if (tms_dout[15]) begin
+                        tms_bio <= 1'b1;
+                    end else if (tms_dout == 16'd0) begin
+                        tms_bio <= 1'b0;
+                        if (dsp_execute) begin
+                            cpu_halt_by_dsp <= 1'b0;
+                            dsp_execute <= 1'b0;
+                            dsp_halt_released <= 1'b1;
                         end
                     end
-                endcase
-            end
+                end
+            endcase
         end
         
         // Mirror the inherited DemonsWorld bus timing: the 68K write is

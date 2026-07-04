@@ -35,4 +35,4 @@ Now, before you ask...
 | `rtl/modules/fx68k/` | Motorola 68000 compatible CPU | Jorge Cwik / [jtPerceval/fx68k](https://github.com/jtPerceval/fx68k) |
 | `rtl/modules/T80/` | Z80 compatible sound CPU | Daniel Wallner, MikeJ, Sorgelig, and [T80 contributors](https://github.com/mist-devel/T80) |
 | `rtl/modules/opl2_fpga_MiSTer/` | Active YM3812/OPL2 audio path | [gtaylormb/opl2_fpga_MiSTer](https://github.com/gtaylormb/opl2_fpga_MiSTer), derived from `opl3_fpga`/`opl2_fpga` work |
-| `rtl/modules/TMS320C1X/` | TMS320C10-class DSP softcore | Core-owned copy carried forward from the va7deo Demon's World Toaplan scaffold, then adapted here against MAME/TI behavior |
+| `rtl/modules/IKA32010/` | TMS320C10-class DSP softcore | Sehyeon Kim (Raki) / [ika-musume/IKA32010](https://github.com/ika-musume/IKA32010) |
