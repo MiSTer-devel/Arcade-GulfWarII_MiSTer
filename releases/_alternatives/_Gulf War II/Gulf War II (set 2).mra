@@ -1,6 +1,6 @@
 <misterromdescription>
-    <name>Gulf War II (set 1)</name>
-    <setname>gulfwar2</setname>
+    <name>Gulf War II (set 2)</name>
+    <setname>gulfwar2a</setname>
     <rbf>GulfWarII</rbf>
     <mameversion>0287</mameversion>
     <year>1991</year>
@@ -29,13 +29,13 @@
 
     <buttons names="Shot,Bomb,P1 Start,P2 Start,Coin,Pause" default="A,B,Start,Select,L,R"/>
 
-    <rom index="0" zip="gulfwar2.zip" md5="None">
+    <rom index="0" zip="gulfwar2a.zip|gulfwar2.zip" md5="None">
         <!-- Fixed download layout for the in-progress GulfWarII core. -->
         <!-- Total fixed ROM stream: 0x102700 bytes. -->
         <!-- Main 68K code - starts at 0x000000, fixed slot 0x40000 -->
         <interleave output="16">
-            <part name="08-u119.bin" crc="41ebf9c0" map="01"/>
-            <part name="07-u92.bin" crc="b73e6b25" map="10"/>
+            <part name="gw2_28.u119" crc="b9118660" map="01"/>
+            <part name="gw2_27.u92" crc="3494f1aa" map="10"/>
         </interleave>
 
         <!-- Sound Z80 code - starts at 0x040000, fixed slot 0x8000 -->
@@ -44,17 +44,17 @@
         <!-- TMS320C10 DSP code - starts at 0x048000, fixed slot 0x2000 -->
         <!-- MAME uses only the first 0x800 bytes from each duplicated PROM. -->
         <interleave output="16">
-            <part name="01-u2.rom" crc="01399b65" length="0x800" map="01"/>
-            <part name="02-u1.rom" crc="abefe4ca" length="0x800" map="10"/>
+            <part name="gw2_21.udsp2" crc="87a473af" length="0x800" map="01"/>
+            <part name="gw2_22.udsp1" crc="3a97b0db" length="0x800" map="10"/>
         </interleave>
         <part repeat="0x1000"> FF</part>
 
         <!-- Text characters - starts at 0x04a000, fixed slot 0x18000 -->
         <interleave output="32">
             <part repeat="0x4000" map="0001">00</part>
-            <part name="03-u9.bin" crc="1b7934b3" map="0010"/>
-            <part name="04-u10.bin" crc="6f7bfb58" map="0100"/>
-            <part name="05-u11.bin" crc="31814724" map="1000"/>
+            <part name="gw2_23.u9" crc="a2aee4c8" length="0x4000" map="0010"/>
+            <part name="gw2_24.u10" crc="fb3f71cd" length="0x4000" map="0100"/>
+            <part name="gw2_25.u11" crc="90eeb0a0" length="0x4000" map="1000"/>
         </interleave>
         <part repeat="0x8000"> FF</part>
 

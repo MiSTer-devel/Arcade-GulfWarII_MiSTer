@@ -1547,7 +1547,9 @@ always @ (posedge clk_sys) begin
         // sampled on the local 10 MHz CPU enable.
         int_en <= gw_irq4_enable;
         tile_flip <= gw_flip_screen;
-        sprite_flip <= gw_flip_screen;
+        // MAME flips only the tilemaps from the main latch. The game-side
+        // object code handles sprite coordinates/attributes for flip screen.
+        sprite_flip <= 1'b0;
 
         if ( gw_crtc_addr_eff_cs ) begin
             gw_crtc_index <= cpu_write_byte[3:0];
@@ -1609,7 +1611,7 @@ always @ (posedge clk_sys) begin
             end
             
             if ( fcu_flip_cs ) begin
-                sprite_flip <= gw_flip_screen;
+                sprite_flip <= 1'b0;
             end
             
             if ( sprite_ofs_cs ) begin
